@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/salman/Documents/AndroidProjects/Form2/app/build/intermediates/exploded-aar/com.splitwise/tokenautocomplete/2.0.5/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="45f009fdc8fbefb77711f45e187f20eb4a2b7fcc">
+        <dex dex="/Users/salman/Documents/AndroidProjects/Form2/app/build/intermediates/pre-dexed/debug/classes-d25eb6c854a3ff7cb06a969df2658e22b823f0b9.jar" />
+    </item>
+
+</items>
