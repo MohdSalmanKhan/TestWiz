@@ -1,0 +1,8 @@
+<com.example.android.wizardpager.wizard.ExpandableHeightGridView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:verticalSpacing="5dp"
+    android:horizontalSpacing="5dp"
+    android:numColumns="3"
+    android:id="@+id/est_plt_images_grid"></com.example.android.wizardpager.wizard.ExpandableHeightGridView>
