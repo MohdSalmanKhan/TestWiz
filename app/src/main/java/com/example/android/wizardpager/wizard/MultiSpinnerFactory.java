@@ -26,7 +26,7 @@ public class MultiSpinnerFactory implements FormWidgetFactory {
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> dataList, tempDataList;
-    ListView listView;
+    ContactsCompletionView contactsCompletionView;
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -56,20 +56,21 @@ public class MultiSpinnerFactory implements FormWidgetFactory {
         dataList.add("appy");
 
         tempDataList = (ArrayList<String>) dataList.clone();
-        listView = (ListView) LayoutInflater.from(context).inflate(
+        contactsCompletionView = (ContactsCompletionView) LayoutInflater.from(context).inflate(
                 R.layout.layout_chip, null);
-        adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
-                android.R.id.text1, tempDataList);
+        adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, tempDataList);
 
-        listView.setAdapter(adapter);
-        listView.setTag(R.id.list, tempDataList);
-        listView.setTag(R.id.key, jsonObject.getString("key"));
-        listView.setTag(R.id.type, jsonObject.getString("type"));
+        contactsCompletionView.setAdapter(adapter);
+        contactsCompletionView.setTag(R.id.searchView, tempDataList);
+        contactsCompletionView.setTag(R.id.key, jsonObject.getString("key"));
+        contactsCompletionView.setTag(R.id.type, jsonObject.getString("type"));
+        contactsCompletionView.allowDuplicates(false);
 
      //   setListViewHeightBasedOnChildren(listView);
-        listView.setOnItemClickListener(listener);
+        contactsCompletionView.setOnClickListener(listener);
+      //  listView.setOnItemClickListener(listener);
 
-        views.add(listView);
+        views.add(contactsCompletionView);
 
         return views;
     }

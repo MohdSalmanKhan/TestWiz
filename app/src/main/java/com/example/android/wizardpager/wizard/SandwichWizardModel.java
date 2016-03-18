@@ -34,7 +34,7 @@ public class SandwichWizardModel extends AbstractWizardModel {
     @Override
     protected PageList onNewRootPageList() {
 
-        int x = 3;
+        int x = 4;
 
         ArrayList<Page> pages= new ArrayList<Page>();
 
@@ -49,10 +49,12 @@ public class SandwichWizardModel extends AbstractWizardModel {
 
                 pages.add(new CustomerInfoPage(this,"Second  " + i ,number).setRequired(true).setHasMiddleAction(true));
 
-            } else {
+            } else if (i == 3){
                 number = "step3";
                 pages.add(new CustomerInfoPage(this,"Third  " + i ,number).setRequired(true).setHasMiddleAction(true));
-
+            } else{
+                number = "step4";
+                pages.add(new CustomerInfoPage(this,"Fourth  " + i ,number).setRequired(true).setHasMiddleAction(true));
             }
         }
 

@@ -40,6 +40,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,7 +49,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.wizardpager.R;
+import com.example.android.wizardpager.wizard.AddImageFactory;
 import com.example.android.wizardpager.wizard.ChipTextView;
+import com.example.android.wizardpager.wizard.ContactsCompletionView;
 import com.example.android.wizardpager.wizard.Interfaces.CommonListener;
 import com.example.android.wizardpager.wizard.Interfaces.JsonApi;
 import com.example.android.wizardpager.wizard.JsonFormFragmentPresenter;
@@ -62,7 +65,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CustomerInfoFragment extends MvpFragment<JsonFormFragmentPresenter, JsonFormFragmentViewState> implements
         WizardActivity.MiddleActionButtonClick, JsonFormFragmentView<JsonFormFragmentViewState>, CommonListener {
@@ -290,19 +295,49 @@ public class CustomerInfoFragment extends MvpFragment<JsonFormFragmentPresenter,
     }
 
     @Override
+    public void updateImageInGridView(Bitmap bitmap, String imagePath, String currentKey) {
+
+        int childCount = mMainView.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = mMainView.getChildAt(i);
+            if (view instanceof GridView) {
+                GridView gridView = (GridView) view;
+
+                String key = (String) gridView.getTag(R.id.key);
+                if (key.equals(currentKey)) {
+
+                    String totalImages = (String) gridView.getTag(R.id.est_plt_images_grid);
+                    if( !totalImages.isEmpty()){
+                        totalImages = totalImages + ",";
+                    }
+                    totalImages = totalImages + imagePath;
+                    gridView.setTag(R.id.est_plt_images_grid, totalImages);
+                    AddImageFactory.GridAdapter gridAdapter = (AddImageFactory.GridAdapter) gridView.getAdapter();
+                    gridAdapter.add(imagePath);
+                }
+            }
+        }
+    }
+
+    @Override
     public void updateListView(ArrayList<String> arrayList){
         int childCount = mMainView.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View view = mMainView.getChildAt(i);
-            if (view instanceof ListView) {
+            if (view instanceof ContactsCompletionView) {
 
-                ListView listView = (ListView) view;
-                listView.setTag(R.id.list, arrayList);
-                ArrayAdapter arrayAdapter = (ArrayAdapter) listView.getAdapter();
+                ContactsCompletionView contactsCompletionView = (ContactsCompletionView) view;
+                contactsCompletionView.setTag(R.id.list, arrayList);
+
+                contactsCompletionView.setTag(R.id.searchView, arrayList);
+
+                ArrayAdapter arrayAdapter = (ArrayAdapter) contactsCompletionView.getAdapter();
                 arrayAdapter.clear();
+                contactsCompletionView.clear();
 
                 for(String s: arrayList) {
                     arrayAdapter.add(s);
+                    contactsCompletionView.addObject(s);
                 }
                 arrayAdapter.notifyDataSetChanged();
             }
@@ -416,6 +451,8 @@ public class CustomerInfoFragment extends MvpFragment<JsonFormFragmentPresenter,
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        presenter.onItemClick(parent);
+        if(position == 0) {
+            presenter.onItemClick(parent);
+        }
     }
 }

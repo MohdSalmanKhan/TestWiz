@@ -35,11 +35,12 @@ public class JsonFormInteractor {
         map.put(JsonFormConstants.MULTI_EDIT_TEXT, new MultiEditTextFactory());
         map.put(JsonFormConstants.MULTI_SPINNER, new MultiSpinnerFactory());
         map.put(JsonFormConstants.AUTO_COMPLETE, new AutoCompleteFactory());
+        map.put(JsonFormConstants.MULTI_IMAGE, new AddImageFactory());
     }
 
     public List<View> fetchFormElements(String stepName, Context context, JSONObject parentJson, CommonListener listener) {
         Log.d(TAG, "fetchFormElements called");
-        List<View> viewsFromJson = new ArrayList<>(5);
+        List<View> viewsFromJson = new ArrayList<>(14);
         try {
             JSONArray fields = parentJson.getJSONArray("fields");
             for (int i = 0; i < fields.length(); i++) {

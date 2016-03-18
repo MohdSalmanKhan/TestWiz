@@ -39,6 +39,7 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 public class JsonFormFragmentPresenter extends MvpBasePresenter<JsonFormFragmentView<JsonFormFragmentViewState>>{
     private static final String TAG = "FormFragmentPresenter";
     private static final int RESULT_LOAD_IMG = 1;
+    private static final int RESULT_LOAD__MULTIPLE_IMG = 2;
     private String mStepName;
     private JSONObject mStepDetails;
     private String mCurrentKey;
@@ -116,11 +117,11 @@ public class JsonFormFragmentPresenter extends MvpBasePresenter<JsonFormFragment
                 if (path instanceof String) {
                     getView().writeValue(mStepName, key, (String) path);
                 }
-            }else if (childAt instanceof ListView){
+            }else if (childAt instanceof ContactsCompletionView){
                 String type =(String) childAt.getTag(R.id.type);
 
                 if(type.equalsIgnoreCase("edit_text_spinner")){
-                    ArrayList<String> arrayList = (ArrayList<String>) childAt.getTag(R.id.list);
+                    ArrayList<String> arrayList = (ArrayList<String>) childAt.getTag(R.id.searchView);
                     String result = "";
                     for ( String s : arrayList){
                         result = result + s + ",";
@@ -128,6 +129,15 @@ public class JsonFormFragmentPresenter extends MvpBasePresenter<JsonFormFragment
                     result = result.substring(0, result.length() -1) ;
                     getView().writeValue(mStepName, key, (String) result);
                 }
+            } else if (childAt instanceof ExpandableHeightGridView){
+                String type =(String) childAt.getTag(R.id.type);
+
+                if(type.equalsIgnoreCase("multi_image")){
+
+                    String result = (String) childAt.getTag(R.id.est_plt_images_grid);
+                    getView().writeValue(mStepName, key, (String) result);
+                }
+
             } else if (childAt instanceof ContactsCompletionView){
 
                 ContactsCompletionView completionView = (ContactsCompletionView) childAt;
@@ -195,22 +205,33 @@ public class JsonFormFragmentPresenter extends MvpBasePresenter<JsonFormFragment
         } else if (requestCode == Utils.CALL_ACTIVITY && resultCode == Activity.RESULT_OK && data != null){
             Bundle bundle = data.getExtras();
             getView().updateListView(bundle.getStringArrayList("list"));
+        } else if ( requestCode == RESULT_LOAD__MULTIPLE_IMG && resultCode == Activity.RESULT_OK && data != null){
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            // No need for null check on cursor
+            Cursor cursor = getView().getContext().getContentResolver()
+                    .query(selectedImage, filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String imagePath = cursor.getString(columnIndex);
+            getView().updateImageInGridView(ImageUtils.loadBitmapFromFile(imagePath, ImageUtils.getDeviceWidth(getView().getContext()), dpToPixels(getView().getContext(), 200)), imagePath, mCurrentKey);
+            cursor.close();
+
         }
     }
 
-    public void onItemClick(AdapterView parent){
+    public void onItemClick(View v){
 
-        Intent intent = new Intent(getView().getContext(), MutiSpinnerActivity.class);
-
-        ArrayList<String> arrayList ;
-
-        ListView listView = (ListView) parent;
-        arrayList = (ArrayList<String>) listView.getTag(R.id.list);
-
-        Bundle bundle1 = new Bundle();
-        bundle1.putStringArrayList("list", arrayList);
-        intent.putExtras(bundle1);
-        getView().startActivityForResult(intent, Utils.CALL_ACTIVITY);
+        String key = (String) v.getTag(R.id.key);
+        String type = (String) v.getTag(R.id.type);
+        if (JsonFormConstants.MULTI_IMAGE.equals(type)) {
+            getView().hideKeyBoard();
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            mCurrentKey = key;
+            getView().startActivityForResult(galleryIntent, RESULT_LOAD__MULTIPLE_IMG);
+        }
     }
 
     public void onClick(View v) {
@@ -222,8 +243,15 @@ public class JsonFormFragmentPresenter extends MvpBasePresenter<JsonFormFragment
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             mCurrentKey = key;
             getView().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-        } else if ( JsonFormConstants.MULTI_EDIT_TEXT.equalsIgnoreCase(type) ){
+        } else if ( JsonFormConstants.MULTI_SPINNER.equalsIgnoreCase(type) ){
       //      getView().addFormElement(v);
+            ArrayList<String> arrayList = (ArrayList<String>) v.getTag(R.id.searchView);
+            Intent intent = new Intent(getView().getContext(), MutiSpinnerActivity.class);
+            Bundle bundle1 = new Bundle();
+            bundle1.putStringArrayList("list", arrayList);
+            intent.putExtras(bundle1);
+            getView().startActivityForResult(intent, Utils.CALL_ACTIVITY);
+
         }
     }
 

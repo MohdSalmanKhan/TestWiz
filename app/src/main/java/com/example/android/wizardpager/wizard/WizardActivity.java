@@ -283,7 +283,7 @@ public class WizardActivity extends AppCompatActivity implements
                 "            }\n" +
                 "            \n" +
                 "        ],\n" +
-                "        \"title\":\"Step 1 of 3\",\n" +
+                "        \"title\":\"Step 1 of 4\",\n" +
                 "        \"next\":\"step2\"\n" +
                 "    },\n" +
                 "    \"step2\":{\n" +
@@ -331,7 +331,7 @@ public class WizardActivity extends AppCompatActivity implements
                 "                \"value\":\"areYouNovice\"\n" +
                 "            }\n" +
                 "        ],\n" +
-                "        \"title\":\"Step 2 of 3\",\n" +
+                "        \"title\":\"Step 2 of 4\",\n" +
                 "        \"next\":\"step3\"\n" +
                 "    },\n" +
                 "    \"step3\":{\n" +
@@ -342,7 +342,17 @@ public class WizardActivity extends AppCompatActivity implements
                 "                \"hint\":\"Enter data\"\n" +
                 "            }\n" +
                 "        ],\n" +
-                "        \"title\":\"Step 3 of 3\"\n" +
+                "        \"title\" : \"Step 3 of 4\",\n" +
+                "        \"next\" : \"step4\"\n" +
+                "    },\n" +
+                "    \"step4\" : {\n" +
+                "        \"fields\" : [\n" +
+                "        {\n" +
+                "            \"key\" : \"add_photo\",\n" +
+                "            \"type\" : \"multi_image\"\n" +
+                "        }\n" +
+                "        ],\n" +
+                "        \"title\" : \"Step 4 of 4\"\n" +
                 "    }\n" +
                 "}";
     }

@@ -52,6 +52,8 @@ public interface JsonFormFragmentView<VS extends ViewState> extends MvpView {
 
     void updateRelevantImageView(Bitmap bitmap, String imagePath, String currentKey);
 
+    void updateImageInGridView(Bitmap bitmap, String imagePath, String currentKey);
+
     void updateListView(ArrayList<String> arrayList);
 
     void writeValue(String stepName, String key, String value);
