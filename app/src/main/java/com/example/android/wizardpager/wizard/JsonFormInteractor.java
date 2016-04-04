@@ -36,6 +36,7 @@ public class JsonFormInteractor {
         map.put(JsonFormConstants.MULTI_SPINNER, new MultiSpinnerFactory());
         map.put(JsonFormConstants.AUTO_COMPLETE, new AutoCompleteFactory());
         map.put(JsonFormConstants.MULTI_IMAGE, new AddImageFactory());
+        map.put(JsonFormConstants.CLOCK, new ClockFactory());
     }
 
     public List<View> fetchFormElements(String stepName, Context context, JSONObject parentJson, CommonListener listener) {

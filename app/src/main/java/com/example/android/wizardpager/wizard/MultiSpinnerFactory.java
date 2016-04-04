@@ -14,6 +14,7 @@ import com.example.android.wizardpager.R;
 import com.example.android.wizardpager.wizard.Interfaces.*;
 import com.example.android.wizardpager.wizard.Interfaces.CommonListener;
 
+import org.apmem.tools.layouts.FlowLayout;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -55,7 +56,18 @@ public class MultiSpinnerFactory implements FormWidgetFactory {
         dataList.add("banana");
         dataList.add("appy");
 
-        tempDataList = (ArrayList<String>) dataList.clone();
+        if(jsonObject.has("value")){
+            String path = jsonObject.getString("value");
+            String allPaths[] = path.split(",");
+            tempDataList = new ArrayList<String>();
+            for(String s : allPaths){
+                tempDataList.add(s);
+            }
+        }else {
+            tempDataList = (ArrayList<String>) dataList.clone();
+        }
+
+
         contactsCompletionView = (ContactsCompletionView) LayoutInflater.from(context).inflate(
                 R.layout.layout_chip, null);
         adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, tempDataList);
@@ -69,6 +81,8 @@ public class MultiSpinnerFactory implements FormWidgetFactory {
      //   setListViewHeightBasedOnChildren(listView);
         contactsCompletionView.setOnClickListener(listener);
       //  listView.setOnItemClickListener(listener);
+
+
 
         views.add(contactsCompletionView);
 

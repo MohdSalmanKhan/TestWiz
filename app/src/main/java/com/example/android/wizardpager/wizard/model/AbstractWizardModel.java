@@ -18,6 +18,7 @@ package com.example.android.wizardpager.wizard.model;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +34,20 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
 
     private List<ModelCallbacks> mListeners = new ArrayList<ModelCallbacks>();
     private PageList mRootPageList;
+   // private ArrayList<Fragment> mFragmentList;
 
     public AbstractWizardModel(Context context) {
         mContext = context;
         mRootPageList = onNewRootPageList();
+       // mFragmentList = onNewFragmentList();
     }
 
     /**
      * Override this to define a new wizard model.
      */
+
+   // protected abstract ArrayList<Fragment> onNewFragmentList();
+
     protected abstract PageList onNewRootPageList();
 
     @Override

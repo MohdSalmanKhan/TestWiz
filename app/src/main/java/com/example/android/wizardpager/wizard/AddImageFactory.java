@@ -38,7 +38,7 @@ public class AddImageFactory implements FormWidgetFactory  {
         gridView = (ExpandableHeightGridView) LayoutInflater.from(context).inflate(R.layout.layout_grid, null);
 
         gridAdapter = new GridAdapter(context, R.layout.layout_grid);
-        gridAdapter.add("a");
+        gridAdapter.add("");
         gridView.setTag(R.id.key, jsonObject.getString("key"));
         gridView.setTag(R.id.type, jsonObject.getString("type"));
         gridView.setTag(R.id.est_plt_images_grid, "");
@@ -46,6 +46,15 @@ public class AddImageFactory implements FormWidgetFactory  {
         gridView.setOnItemClickListener(listener);
         gridView.setExpanded(true);
 
+
+        if(jsonObject.has("value")){
+            String path = jsonObject.getString("value");
+            String allPaths[] = path.split(",");
+            for(String s : allPaths){
+                gridAdapter.add(s);
+            }
+            gridAdapter.notifyDataSetChanged();
+        }
 
         views.add(gridView);
         return views;

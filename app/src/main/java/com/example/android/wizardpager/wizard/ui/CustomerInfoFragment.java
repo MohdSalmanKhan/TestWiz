@@ -61,6 +61,7 @@ import com.example.android.wizardpager.wizard.MvpFragment;
 import com.example.android.wizardpager.wizard.WizardActivity;
 import com.example.android.wizardpager.wizard.model.CustomerInfoPage;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,6 +88,9 @@ public class CustomerInfoFragment extends MvpFragment<JsonFormFragmentPresenter,
     private int buttonLocation;
 
 
+    public void setNull(){
+
+    }
 
 
     public static CustomerInfoFragment getFormFragment(String stepName) {
@@ -153,11 +157,20 @@ public class CustomerInfoFragment extends MvpFragment<JsonFormFragmentPresenter,
 
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    //    mCallbacks = null;
+     //   mJsonApi = null;
+
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
         mJsonApi = null;
+        mCallbacks = null;
 
     }
 
@@ -356,6 +369,16 @@ public class CustomerInfoFragment extends MvpFragment<JsonFormFragmentPresenter,
     }
 
     @Override
+    public void writeValue(String stepName, String key, JSONArray value) {
+        try {
+            mJsonApi.writeValue(stepName, key, value);
+        } catch (JSONException e) {
+            // TODO - handle
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void writeValue(String stepName, String prentKey, String childObjectKey, String childKey, String value) {
 
         try {
@@ -367,8 +390,16 @@ public class CustomerInfoFragment extends MvpFragment<JsonFormFragmentPresenter,
     }
 
     @Override
+    public String getStepString(String stepName){
+        return mJsonApi.getStepString(stepName);
+    }
+
+    @Override
     public JSONObject getStep(String stepName) {
-        return mJsonApi.getStep(stepName);
+        if(mJsonApi != null)
+            return mJsonApi.getStep(stepName);
+        else
+            return null;
 
     }
 

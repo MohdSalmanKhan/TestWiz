@@ -177,7 +177,7 @@ public class WizardActivity extends AppCompatActivity implements
 
     private String getJson(){
         return "{\n" +
-                "    \"count\":\"3\",\n" +
+                "    \"count\":\"5\",\n" +
                 "    \"step1\":{\n" +
                 "        \"fields\":[\n" +
                 "            {\n" +
@@ -258,32 +258,9 @@ public class WizardActivity extends AppCompatActivity implements
                 "                \"type\":\"multi_edit_text\",\n" +
                 "                \"hint\":\"Email\",\n" +
                 "                \"edit_type\" : \"number\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"key\":\"labelBackgroundImage\",\n" +
-                "                \"type\":\"label\",\n" +
-                "                \"text\":\"Choose Background Image\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"key\":\"chooseImage\",\n" +
-                "                \"type\":\"choose_image\",\n" +
-                "                \"uploadButtonText\":\"Choose\",\n" +
-                "                \"v_required\":{  \"value\" : \"true\",\n" +
-                "                    \"err\" : \"Please choose an image to proceed.\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"key\":\"house\",\n" +
-                "                \"type\":\"spinner\",\n" +
-                "                \"hint\": \"Name Thy House\",\n" +
-                "                \"values\":[\"Stark\", \"Targeriyan\", \"Lannister\"],\n" +
-                "                \"v_required\":{  \"value\" : \"true\",\n" +
-                "                    \"err\" : \"Please choose a value to proceed.\"\n" +
-                "                }\n" +
                 "            }\n" +
-                "            \n" +
                 "        ],\n" +
-                "        \"title\":\"Step 1 of 4\",\n" +
+                "        \"title\":\"Step 1 of 5\",\n" +
                 "        \"next\":\"step2\"\n" +
                 "    },\n" +
                 "    \"step2\":{\n" +
@@ -331,7 +308,7 @@ public class WizardActivity extends AppCompatActivity implements
                 "                \"value\":\"areYouNovice\"\n" +
                 "            }\n" +
                 "        ],\n" +
-                "        \"title\":\"Step 2 of 4\",\n" +
+                "        \"title\":\"Step 2 of 5\",\n" +
                 "        \"next\":\"step3\"\n" +
                 "    },\n" +
                 "    \"step3\":{\n" +
@@ -342,7 +319,7 @@ public class WizardActivity extends AppCompatActivity implements
                 "                \"hint\":\"Enter data\"\n" +
                 "            }\n" +
                 "        ],\n" +
-                "        \"title\" : \"Step 3 of 4\",\n" +
+                "        \"title\" : \"Step 3 of 5\",\n" +
                 "        \"next\" : \"step4\"\n" +
                 "    },\n" +
                 "    \"step4\" : {\n" +
@@ -352,7 +329,17 @@ public class WizardActivity extends AppCompatActivity implements
                 "            \"type\" : \"multi_image\"\n" +
                 "        }\n" +
                 "        ],\n" +
-                "        \"title\" : \"Step 4 of 4\"\n" +
+                "        \"title\" : \"Step 4 of 5\",\n" +
+                "        \"next\" : \"step5\"\n" +
+                "    },\n" +
+                "    \"step5\" : {\n" +
+                "        \"fields\" : [\n" +
+                "        {\n" +
+                "            \"key\" : \"start_time\",\n" +
+                "            \"type\" : \"clock\"\n" +
+                "        }\n" +
+                "        ], \n" +
+                "        \"title\" : \"Step 5 of 5\"\n" +
                 "    }\n" +
                 "}";
     }
@@ -486,6 +473,18 @@ public class WizardActivity extends AppCompatActivity implements
     }
 
     @Override
+    public String getStepString(String stepName) {
+        synchronized (mJSONObject) {
+            try {
+                return mJSONObject.getJSONObject(stepName).toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public JSONObject getStep(String stepName) {
         synchronized (mJSONObject) {
             try {
@@ -500,6 +499,22 @@ public class WizardActivity extends AppCompatActivity implements
     @Override
     public void writeValue(String stepName, String key, String value) throws JSONException {
 
+        synchronized (mJSONObject) {
+            JSONObject jsonObject = mJSONObject.getJSONObject(stepName);
+            JSONArray fields = jsonObject.getJSONArray("fields");
+            for (int i = 0; i < fields.length(); i++) {
+                JSONObject item = fields.getJSONObject(i);
+                String keyAtIndex = item.getString("key");
+                if (key.equals(keyAtIndex)) {
+                    item.put("value", value);
+                    return;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void writeValue(String stepName, String key, JSONArray value) throws JSONException {
         synchronized (mJSONObject) {
             JSONObject jsonObject = mJSONObject.getJSONObject(stepName);
             JSONArray fields = jsonObject.getJSONArray("fields");

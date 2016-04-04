@@ -16,4 +16,8 @@
         Sherpus ter berp derpler derperker pee herpler. Le ner derpus terpus, der ter herpy? Ner terp serp herpem berps herpy der ter.</string>
     <string name="label_password">Password</string>
     <string name="validate_button">Validate</string>
+    <string name="start_end_same_time">Start time can not be same as end time</string>
+    <string name="start_end_greater_time">Start time can not greater than end time</string>
+    <string name="start_session2_error">Session 2 Start Time should be after session 1 end time</string>
+    <string name="end_session2_error">Session 2 End Time should be before session 1 start time</string>
 </resources>

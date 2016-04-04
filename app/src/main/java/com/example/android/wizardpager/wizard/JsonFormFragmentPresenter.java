@@ -2,12 +2,14 @@ package com.example.android.wizardpager.wizard;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,7 +26,9 @@ import com.example.android.wizardpager.R;
 import com.example.android.wizardpager.wizard.Interfaces.AddInLayout;
 import com.example.android.wizardpager.wizard.ui.CustomerInfoFragment;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.wdullaer.materialdatetimepicker.time.Timepoint;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -108,7 +112,46 @@ public class JsonFormFragmentPresenter extends MvpBasePresenter<JsonFormFragment
                     return validationStatus;
                 }
                 getView().writeValue(mStepName, key, editText.getText().toString());
-            } else if (childAt instanceof ImageView) {
+            } else if (childAt instanceof RecyclerView){
+                ClinicTimingsAdapter clinicTimingsAdapter = (ClinicTimingsAdapter) ((RecyclerView)childAt).getAdapter();
+
+                JSONArray jsonArray = new JSONArray();
+                for(i = 0; i < 7 ; i++){
+                    TimingsViewModel timingsViewModel = clinicTimingsAdapter.mDataSet.get(i);
+
+                    String day = timingsViewModel.getDay();
+                    Timepoint session1Start = timingsViewModel.getSession1Start();
+                    Timepoint session1End = timingsViewModel.getSession1End();
+
+                    Timepoint session2Start = timingsViewModel.getSession2Start();
+                    Timepoint session2End = timingsViewModel.getSession2End();
+
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("day", day);
+                        if(session1Start != null && session1End != null) {
+                            jsonObject.put("session1_start_hour", session1Start.getHour());
+                            jsonObject.put("session1_start_minute", session1Start.getMinute());
+                            jsonObject.put("session1_end_hour", session1End.getHour());
+                            jsonObject.put("session1_end_minute", session1End.getMinute());
+
+                        }
+                        if(session2Start != null && session2End != null) {
+                            jsonObject.put("session2_start_hour", session2Start.getHour());
+                            jsonObject.put("session2_start_minute", session2Start.getMinute());
+                            jsonObject.put("session2_end_hour", session2End.getHour());
+                            jsonObject.put("session2_end_minute", session2End.getMinute());
+                        }
+                        jsonArray.put(jsonObject);
+                    }
+                    catch (Exception e){
+
+                    }
+                    getView().writeValue(mStepName, key, jsonArray);
+
+                }
+            }
+            else if (childAt instanceof ImageView) {
                 ValidationStatus validationStatus = ImagePickerFactory.validate((ImageView) childAt);
                 if (!validationStatus.isValid()) {
                     return validationStatus;
@@ -251,6 +294,9 @@ public class JsonFormFragmentPresenter extends MvpBasePresenter<JsonFormFragment
             bundle1.putStringArrayList("list", arrayList);
             intent.putExtras(bundle1);
             getView().startActivityForResult(intent, Utils.CALL_ACTIVITY);
+
+        }else if(JsonFormConstants.CLOCK.equalsIgnoreCase(type)){
+            Dialog dialog = new Dialog(getView().getContext());
 
         }
     }

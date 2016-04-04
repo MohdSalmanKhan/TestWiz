@@ -17,4 +17,5 @@ public class JsonFormConstants {
     public static final String MULTI_SPINNER      = "edit_text_spinner";
     public static final String AUTO_COMPLETE      = "dropdown";
     public static final String MULTI_IMAGE        = "multi_image";
+    public static final String CLOCK              = "clock";
 }

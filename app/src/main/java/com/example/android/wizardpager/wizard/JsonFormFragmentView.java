@@ -12,6 +12,7 @@ import com.example.android.wizardpager.wizard.Interfaces.CommonListener;
 import com.example.android.wizardpager.wizard.Interfaces.MvpView;
 import com.example.android.wizardpager.wizard.ui.CustomerInfoFragment;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -58,12 +59,15 @@ public interface JsonFormFragmentView<VS extends ViewState> extends MvpView {
 
     void writeValue(String stepName, String key, String value);
 
+    void writeValue(String stepName, String key, JSONArray value);
+
     void writeValue(String stepName, String prentKey, String childObjectKey, String childKey, String value);
 
     JSONObject getStep(String stepName);
 
     String getCurrentJsonState();
 
+    String getStepString(String stepName);
 
     JSONObject getCurrentJson();
 

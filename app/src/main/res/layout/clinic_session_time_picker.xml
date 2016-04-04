@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/mdtp_picker_dimen"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/mdtp_picker_dimen"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="7dp">
+
+        <LinearLayout
+            android:id="@+id/layout_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_view_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="start"
+                android:textColor="@color/grey"/>
+
+            <TextView
+                android:id="@+id/text_view_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="10:00 AM"
+                android:textColor="@color/grey"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:background="@color/button_material_dark" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_view_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="end"
+                android:textColor="@color/grey"/>
+
+            <TextView
+                android:id="@+id/text_view_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="01:00 PM"
+                android:textColor="@color/grey"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/toast_text_view"
+        tools:text="@string/start_end_time_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ff0000"/>
+
+    <include layout="@layout/practo_time_picker_dialog" />
+
+</LinearLayout>

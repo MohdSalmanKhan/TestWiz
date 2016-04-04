@@ -46,6 +46,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     private ReviewAdapter mReviewAdapter;
 
     public ReviewFragment() {
+
     }
 
     @Override
@@ -93,7 +94,6 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
-
         mWizardModel.unregisterListener(this);
     }
 

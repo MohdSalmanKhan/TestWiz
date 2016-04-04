@@ -3,6 +3,7 @@ package com.example.android.wizardpager.wizard.Interfaces;
 /**
  * Created by salman on 08/03/16.
  */
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +13,8 @@ public interface JsonApi {
 
     void writeValue(String stepName, String key, String value) throws JSONException;
 
+    void writeValue(String stepName, String key, JSONArray value) throws JSONException;
+
     void writeValue(String stepName, String prentKey, String childObjectKey, String childKey, String value)
             throws JSONException;
 
@@ -20,4 +23,6 @@ public interface JsonApi {
     String getCount();
 
     JSONObject getCurrentJson();
+
+    String getStepString(String stepName);
 }
